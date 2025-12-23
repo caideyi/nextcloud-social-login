@@ -41,7 +41,12 @@ class AdminSettings implements ISettings
             }
         }
         $customProviders = $this->appConfig->getValueArray($this->appName, 'custom_providers');
-
+        if (isset($customProviders['custom_oauth2']) 
+            && isset($customProviders['custom_oauth2'][0]) 
+            && isset($customProviders['custom_oauth2'][0]['clientSecret'])) {
+            $customProviders['custom_oauth2'][0]['clientSecret'] = '';
+        }
+        
         $params = [
             'app_name' => $this->appName,
             'action_url' => $this->urlGenerator->linkToRoute($this->appName.'.settings.saveAdmin'),
